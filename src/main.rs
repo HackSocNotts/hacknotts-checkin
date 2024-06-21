@@ -29,7 +29,7 @@ async fn run_loop(message: Message) -> Result<(), HackNottsCheckinError> {
 
 #[tokio::main]
 async fn main() {
-    env_logger::Builder::from_env(Env::default().default_filter_or("debug")).init(); // what a line
+    env_logger::Builder::from_env(Env::default().default_filter_or("info")).init(); // what a line
 
     let url = "wss://wh2ws.hacksoc.net/websocket/checkin-created";
 
