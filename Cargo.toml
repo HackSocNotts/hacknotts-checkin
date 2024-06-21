@@ -1,0 +1,17 @@
+[package]
+name = "hacknotts-checkin"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+chrono = { version = "0.4.38", features = ["serde"] }
+env_logger = "0.11.3"
+futures-util = "0.3.30"
+log = "0.4.21"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+thiserror = "1.0.61"
+tokio = { version = "1.38.0", features = ["full"] }
+
+# I'd rather use rustls but Cargo hates it for some reason
+tokio-tungstenite = { version = "0.23.1", features = ["default", "native-tls", "connect"] }
