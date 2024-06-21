@@ -1,11 +1,15 @@
+use checkin_output::CheckinOutput;
 use env_logger::Env;
 use error::HackNottsCheckinError;
 use futures_util::StreamExt;
 use log::{debug, error, info};
+use stdout_checkin_output::StdOutCheckinOutput;
 use tito_types::Checkin;
 use tokio_tungstenite::{connect_async, tungstenite::protocol::Message};
 
+mod checkin_output;
 mod error;
+mod stdout_checkin_output;
 mod tito_types;
 
 async fn run_loop(message: Message) -> Result<(), HackNottsCheckinError> {
@@ -17,6 +21,8 @@ async fn run_loop(message: Message) -> Result<(), HackNottsCheckinError> {
     let checkin: Checkin = serde_json::from_str(message_string)?;
 
     info!("Processing checkin {checkin}");
+
+    StdOutCheckinOutput::checkin(&checkin)?;
 
     Ok(())
 }

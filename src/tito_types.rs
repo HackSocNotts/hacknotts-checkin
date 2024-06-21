@@ -5,35 +5,35 @@ use serde::{Deserialize, Serialize};
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Checkin {
-    id: u64,
-    slug: String,
-    name: String,
-    company_name: String,
-    first_name: String,
-    last_name: String,
-    release_title: String,
-    email: String,
-    reference: String,
-    registration_reference: String,
-    checked_in: bool,
-    checked_in_at: DateTime<Utc>,
-    checkin_list: CheckinList,
-    checkin_uuid: String,
-    custom: Option<serde_json::Value>,
-    event: Event,
-    answers: Vec<serde_json::Value>,
+    pub id: u64,
+    pub slug: String,
+    pub name: String,
+    pub company_name: String,
+    pub first_name: String,
+    pub last_name: String,
+    pub release_title: String,
+    pub email: String,
+    pub reference: String,
+    pub registration_reference: String,
+    pub checked_in: bool,
+    pub checked_in_at: DateTime<Utc>,
+    pub checkin_list: CheckinList,
+    pub checkin_uuid: String,
+    pub custom: Option<serde_json::Value>,
+    pub event: Event,
+    pub answers: Vec<serde_json::Value>,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct CheckinList {
-    slug: String,
-    title: String,
+    pub slug: String,
+    pub title: String,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Event {
-    slug: String,
-    title: String,
+    pub slug: String,
+    pub title: String,
 }
 
 impl fmt::Display for Checkin {
