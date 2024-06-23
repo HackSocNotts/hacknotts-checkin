@@ -20,7 +20,7 @@ async fn run_loop(message: Message) -> Result<(), HackNottsCheckinError> {
 
     let checkin: Checkin = serde_json::from_str(message_string)?;
 
-    info!("Processing checkin {checkin}");
+    info!("Processing checkin {}", checkin.id);
 
     StdOutCheckinOutput::checkin(&checkin)?;
 
