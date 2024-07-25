@@ -1,7 +1,4 @@
-use crate::{
-    checkin_output::{CheckinOutput, CheckinPrintable},
-    error::HackNottsCheckinError,
-};
+use crate::checkin_output::{CheckinOutput, CheckinPrintable};
 
 pub struct StdOutCheckinOutput;
 

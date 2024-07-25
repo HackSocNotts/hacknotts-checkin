@@ -45,7 +45,7 @@ pub struct Ticket {
 /// The POST body for creating a new checkin from a ticket ID
 #[derive(Serialize, Deserialize, Debug)]
 pub struct NewCheckinBody {
-    pub checkin: NewCheckinBodyCheckin,
+    checkin: NewCheckinBodyCheckin,
 }
 
 impl NewCheckinBody {

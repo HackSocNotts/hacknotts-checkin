@@ -1,6 +1,4 @@
-use std::error::Error;
-
-use crate::tito_types::{Checkin, Ticket, WebhookCheckin};
+use crate::tito_types::{Ticket, WebhookCheckin};
 
 pub trait CheckinOutput {
     fn checkin(checkin: &impl CheckinPrintable);
