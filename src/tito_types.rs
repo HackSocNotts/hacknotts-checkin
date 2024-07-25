@@ -2,9 +2,50 @@ use std::fmt::{self, Display};
 
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
+use uuid::Uuid;
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Checkin {
+    /// The date the Checkin was created
+    pub created_at: DateTime<Utc>,
+
+    /// The date the checkin was deleted
+    pub deleted_at: Option<DateTime<Utc>>,
+
+    /// The identifier of the Checkin
+    pub id: u64,
+
+    /// The id of the ticket that was checked-in
+    pub ticket_id: u64,
+
+    /// The reference of the ticket that was checked-in
+    pub ticket_reference: Option<String>,
+
+    /// The universally unique identifier of the Checkin
+    pub uuid: Uuid,
+
+    /// The date the Checkin was last updated
+    pub updated_at: DateTime<Utc>,
+}
+
+#[derive(Serialize, Deserialize, Debug)]
+pub struct Ticket {
+    pub created_at: DateTime<Utc>,
+    pub email: String,
+    pub first_name: String,
+    pub id: u64,
+    pub last_name: String,
+    pub reference: String,
+    pub registration_reference: String,
+    pub release_title: String,
+    pub slug: String,
+    pub updated_at: DateTime<Utc>,
+}
+
+/// A checkin received from the webhook. Not to be confused with [Checkin], which is returned by the
+/// check-in API.
+#[derive(Serialize, Deserialize, Debug)]
+pub struct WebhookCheckin {
     pub id: u64,
     pub slug: String,
     pub name: String,
@@ -36,7 +77,7 @@ pub struct Event {
     pub title: String,
 }
 
-impl fmt::Display for Checkin {
+impl fmt::Display for WebhookCheckin {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         write!(f, "Checkin ID: {}\n", self.id)?;
         write!(f, "Slug: {}\n", self.slug)?;
