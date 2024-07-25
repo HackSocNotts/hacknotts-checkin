@@ -1,17 +1,14 @@
 use crate::{
-    checkin_output::CheckinOutput, error::HackNottsCheckinError, tito_types::WebhookCheckin,
+    checkin_output::{CheckinOutput, CheckinPrintable},
+    error::HackNottsCheckinError,
 };
 
 pub struct StdOutCheckinOutput;
 
 impl CheckinOutput for StdOutCheckinOutput {
-    type Error = HackNottsCheckinError;
-
-    fn checkin(checkin: &WebhookCheckin) -> Result<(), Self::Error> {
+    fn checkin(checkin: &impl CheckinPrintable) {
         println!("HackNotts 24");
-        println!("{}", checkin.name);
-        println!("{}", checkin.reference);
-
-        Ok(())
+        println!("{}", checkin.name());
+        println!("{}", checkin.reference());
     }
 }

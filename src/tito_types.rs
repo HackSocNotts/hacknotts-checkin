@@ -42,6 +42,27 @@ pub struct Ticket {
     pub updated_at: DateTime<Utc>,
 }
 
+/// The POST body for creating a new checkin from a ticket ID
+#[derive(Serialize, Deserialize, Debug)]
+pub struct NewCheckinBody {
+    pub checkin: NewCheckinBodyCheckin,
+}
+
+impl NewCheckinBody {
+    pub fn new(ticket_id: u64) -> Self {
+        Self {
+            checkin: NewCheckinBodyCheckin { ticket_id },
+        }
+    }
+}
+
+/// For some reason the Tito API makes you put the ticket ID in a little inner class like this:
+/// `{"checkin":{"ticket_id":111111}}`, so this struct exists to accommodate that
+#[derive(Serialize, Deserialize, Debug)]
+struct NewCheckinBodyCheckin {
+    pub ticket_id: u64,
+}
+
 /// A checkin received from the webhook. Not to be confused with [Checkin], which is returned by the
 /// check-in API.
 #[derive(Serialize, Deserialize, Debug)]

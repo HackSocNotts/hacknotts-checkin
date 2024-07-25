@@ -5,7 +5,7 @@ use error::HackNottsCheckinError;
 use futures_util::StreamExt;
 use log::{debug, error, info};
 use stdout_checkin_output::StdOutCheckinOutput;
-use tito_types::{Checkin, Ticket, WebhookCheckin};
+use tito_types::{Checkin, NewCheckinBody, Ticket, WebhookCheckin};
 use tokio_tungstenite::{connect_async, tungstenite::protocol::Message};
 
 mod checkin_output;
@@ -64,13 +64,29 @@ async fn recheck(reference: &str, tito_slug: &str) -> Result<(), reqwest::Error>
     // Rust please add guard let statements I don't wanna enter indent hell 🥺
     let ticket = wrapped_ticket.unwrap();
 
-    let wrapped_checkin = checkins
+    let is_checked_in = checkins
         .iter()
-        .find(|checkin| checkin.ticket_id == ticket.id);
+        .any(|checkin| checkin.ticket_id == ticket.id);
 
-    if let Some(checkin) = wrapped_checkin {
+    if is_checked_in {
         info!("Checkin found! Reprinting ticket");
+        StdOutCheckinOutput::checkin(ticket);
     } else {
+        info!("Ticket is not checked in. Checking in and reprinting ticket.");
+
+        let client = reqwest::Client::new();
+
+        client
+            .post(format!(
+                "https://checkin.tito.io/checkin_lists/{tito_slug}/checkins"
+            ))
+            .json(&NewCheckinBody::new(ticket.id))
+            .send()
+            .await?;
+
+        info!("Checkin successfully created! Printing ticket.");
+
+        StdOutCheckinOutput::checkin(ticket);
     }
 
     Ok(())
@@ -86,7 +102,7 @@ async fn run_loop(message: Message) -> Result<(), HackNottsCheckinError> {
 
     info!("Processing checkin {checkin}");
 
-    StdOutCheckinOutput::checkin(&checkin)?;
+    StdOutCheckinOutput::checkin(&checkin);
 
     Ok(())
 }
