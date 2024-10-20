@@ -1,11 +1,9 @@
-use crate::{checkin_output::CheckinOutput, error::HackNottsCheckinError, tito_types::Checkin};
+use crate::checkin_output::{CheckinOutput, CheckinPrintable};
 
 pub struct StdOutCheckinOutput;
 
 impl CheckinOutput for StdOutCheckinOutput {
-    type Error = HackNottsCheckinError;
-
-    fn checkin(checkin: &Checkin) -> Result<(), Self::Error> {
+    fn checkin(checkin: &impl CheckinPrintable) {
         let hacknotts_logo = " __   __   __     
 |  |_|  |_|  |    
 |            |    
@@ -21,9 +19,7 @@ impl CheckinOutput for StdOutCheckinOutput {
             println!("{:^40}", line);
         }
 
-        println!("{:^40}", checkin.name);
-        println!("{:^40}", checkin.reference);
-
-        Ok(())
+        println!("{:^40}", checkin.name());
+        println!("{:^40}", checkin.reference());
     }
 }
