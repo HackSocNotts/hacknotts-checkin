@@ -1,9 +1,17 @@
-use crate::checkin_output::{CheckinOutput, CheckinPrintable};
+use crate::{
+    checkin_output::{CheckinOutput, CheckinPrintable},
+    error::HackNottsCheckinError,
+};
 
+/// Prints checkins to stdout, only really made for testing
 pub struct StdOutCheckinOutput;
 
 impl CheckinOutput for StdOutCheckinOutput {
-    fn checkin(checkin: &impl CheckinPrintable) {
+    // This checkin output never actually errors, but I don't think you can specify `()` since it
+    // needs to conform to `Error`.
+    type Error = HackNottsCheckinError;
+
+    fn checkin(checkin: &impl CheckinPrintable) -> Result<(), Self::Error> {
         let hacknotts_logo = " __   __   __     
 |  |_|  |_|  |    
 |            |    
@@ -21,5 +29,7 @@ impl CheckinOutput for StdOutCheckinOutput {
 
         println!("{:^40}", checkin.name());
         println!("{:^40}", checkin.reference());
+
+        Ok(())
     }
 }

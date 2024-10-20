@@ -1,12 +1,18 @@
+use std::error::Error;
+
 use crate::tito_types::{Ticket, WebhookCheckin};
 
 pub trait CheckinOutput {
-    fn checkin(checkin: &impl CheckinPrintable);
+    type Error: Error;
+
+    fn checkin(checkin: &impl CheckinPrintable) -> Result<(), Self::Error>;
 }
 
 pub trait CheckinPrintable {
     fn name(&self) -> String;
     fn reference(&self) -> String;
+    fn discord(&self) -> String;
+    fn pizza(&self) -> String;
 }
 
 impl CheckinPrintable for Ticket {
@@ -17,6 +23,14 @@ impl CheckinPrintable for Ticket {
     fn reference(&self) -> String {
         self.reference.clone()
     }
+
+    fn discord(&self) -> String {
+        unimplemented!()
+    }
+
+    fn pizza(&self) -> String {
+        unimplemented!()
+    }
 }
 
 impl CheckinPrintable for WebhookCheckin {
@@ -26,5 +40,13 @@ impl CheckinPrintable for WebhookCheckin {
 
     fn reference(&self) -> String {
         self.reference.clone()
+    }
+
+    fn discord(&self) -> String {
+        unimplemented!()
+    }
+
+    fn pizza(&self) -> String {
+        unimplemented!()
     }
 }

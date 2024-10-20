@@ -12,6 +12,7 @@ mod checkin_output;
 mod error;
 mod stdout_checkin_output;
 mod tito_types;
+mod typst_checkin_output;
 
 #[derive(Parser, Debug)]
 #[command(version, about, long_about = None)]
