@@ -1,11 +1,13 @@
 use std::error::Error;
 
-use crate::tito_types::{Ticket, WebhookCheckin};
+use log::warn;
+
+use crate::tito_types::WebhookCheckin;
 
 pub trait CheckinOutput {
     type Error: Error;
 
-    fn checkin(checkin: &impl CheckinPrintable) -> Result<(), Self::Error>;
+    fn checkin(&self, checkin: &impl CheckinPrintable) -> Result<(), Self::Error>;
 }
 
 pub trait CheckinPrintable {
@@ -13,24 +15,6 @@ pub trait CheckinPrintable {
     fn reference(&self) -> String;
     fn discord(&self) -> String;
     fn pizza(&self) -> String;
-}
-
-impl CheckinPrintable for Ticket {
-    fn name(&self) -> String {
-        format!("{} {}", self.first_name, self.last_name)
-    }
-
-    fn reference(&self) -> String {
-        self.reference.clone()
-    }
-
-    fn discord(&self) -> String {
-        unimplemented!()
-    }
-
-    fn pizza(&self) -> String {
-        unimplemented!()
-    }
 }
 
 impl CheckinPrintable for WebhookCheckin {
@@ -43,10 +27,32 @@ impl CheckinPrintable for WebhookCheckin {
     }
 
     fn discord(&self) -> String {
-        unimplemented!()
+        let question = self
+            .answers
+            .iter()
+            .find(|answer| answer.question == "What is your Discord username?");
+
+        match question {
+            Some(answer) => answer.response.clone(),
+            None => {
+                warn!("Failed to find Discord username! The ticket was: {self:?}");
+                "???".to_string()
+            }
+        }
     }
 
     fn pizza(&self) -> String {
-        unimplemented!()
+        let question = self
+            .answers
+            .iter()
+            .find(|answer| answer.question == "Pizza Choice!");
+
+        match question {
+            Some(answer) => answer.response.clone(),
+            None => {
+                warn!("Failed to find pizza choice! The ticket was: {self:?}");
+                "???".to_string()
+            }
+        }
     }
 }

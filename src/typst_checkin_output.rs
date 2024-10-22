@@ -1,4 +1,12 @@
+use std::{
+    fs,
+    io::{self, Write},
+    path::{Path, PathBuf},
+    process::{Command, Stdio},
+};
+
 use crate::checkin_output::{CheckinOutput, CheckinPrintable};
+use log::{debug, warn};
 use thiserror::Error;
 
 /// Prints a ticket with CUPS from a Typst template.
@@ -28,18 +36,89 @@ use thiserror::Error;
 /// up by Typst.
 ///
 /// The ticket is printed to the default printer with the `lp` command.
-pub struct TypstCheckinOutput {}
+pub struct TypstCheckinOutput {
+    /// The path to the template file. For example, `template/main.typ`
+    template_path: PathBuf,
+}
+
+impl TypstCheckinOutput {
+    pub fn new(template_path: PathBuf) -> Self {
+        Self { template_path }
+    }
+}
 
 impl CheckinOutput for TypstCheckinOutput {
     type Error = TypstCheckinOutputError;
 
-    fn checkin(checkin: &impl CheckinPrintable) -> Result<(), Self::Error> {
-        todo!()
+    fn checkin(&self, checkin: &impl CheckinPrintable) -> Result<(), Self::Error> {
+        let template_parent = self.template_path.parent().unwrap_or(Path::new("/"));
+
+        // For some reason [fs::read_to_string] uses a boxed error, so we have this ugly map
+        let mut template = fs::read_to_string(&self.template_path)
+            .map_err(|e| TypstCheckinOutputError::TemplateReadError(Box::new(e)))?;
+
+        template = template.replace("{{reference}}", &checkin.reference());
+        template = template.replace("{{name}}", &checkin.name());
+        template = template.replace("{{discord}}", &checkin.discord());
+        template = template.replace("{{pizza}}", &checkin.pizza());
+
+        let mut typst_command = Command::new("typst")
+            .current_dir(template_parent)
+            .arg("compile")
+            .arg("-") // Take the modified template from stdin
+            .arg("-") // Output to stdout
+            .stdin(Stdio::piped())
+            .stdout(Stdio::piped())
+            .stderr(Stdio::piped())
+            .spawn()?;
+
+        typst_command
+            .stdin
+            .as_mut()
+            .ok_or(TypstCheckinOutputError::NoStdin)?
+            .write_all(template.as_bytes())
+            .map_err(|_| TypstCheckinOutputError::NoStdin)?;
+
+        // let mut output_pdf = Vec::new();
+
+        // let typst_read_length = typst_command
+        //     .stdout
+        //     .take()
+        //     .ok_or(TypstCheckinOutputError::NoStdout)?
+        //     .read_to_end(&mut output_pdf)?;
+
+        // debug!("Read {typst_read_length} bytes from Typst");
+
+        let typst_output = typst_command.wait_with_output()?;
+
+        debug!("Typst exited with status {}", typst_output.status);
+
+        if !typst_output.stderr.is_empty() {
+            let typst_stderr_string = String::from_utf8_lossy(&typst_output.stderr);
+
+            warn!("Typst stderr was non-empty:\n{typst_stderr_string}");
+        }
+
+        io::stdout().write_all(&typst_output.stdout).unwrap();
+
+        Ok(())
     }
 }
 
 #[derive(Error, Debug)]
 pub enum TypstCheckinOutputError {
+    #[error("Failed to get stdin")]
+    NoStdin,
+
+    #[error("Failed to get stdout")]
+    NoStdout,
+
+    #[error("Failed to read the template: {0:?}")]
+    TemplateReadError(Box<dyn std::error::Error>),
+
+    #[error("Failed to read/write to a command: {0}")]
+    CommandIOError(#[from] io::Error),
+
     #[error("Failed to find variable {0} in template")]
     VariableNotFound(String),
 }

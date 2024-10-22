@@ -11,7 +11,7 @@ impl CheckinOutput for StdOutCheckinOutput {
     // needs to conform to `Error`.
     type Error = HackNottsCheckinError;
 
-    fn checkin(checkin: &impl CheckinPrintable) -> Result<(), Self::Error> {
+    fn checkin(&self, checkin: &impl CheckinPrintable) -> Result<(), Self::Error> {
         let hacknotts_logo = " __   __   __     
 |  |_|  |_|  |    
 |            |    

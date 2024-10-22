@@ -83,7 +83,7 @@ pub struct WebhookCheckin {
     pub checkin_uuid: String,
     pub custom: Option<serde_json::Value>,
     pub event: Event,
-    pub answers: Vec<serde_json::Value>,
+    pub answers: Vec<Question>,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
@@ -96,6 +96,19 @@ pub struct CheckinList {
 pub struct Event {
     pub slug: String,
     pub title: String,
+}
+
+#[derive(Serialize, Deserialize, Debug)]
+pub struct Question {
+    pub question: String,
+    pub response: String,
+}
+
+#[derive(Serialize, Deserialize, Debug)]
+pub struct AdminTicketResponse {
+    pub ticket: WebhookCheckin,
+    pub release: Option<serde_json::Value>,
+    pub questions: Vec<Question>,
 }
 
 impl fmt::Display for WebhookCheckin {
