@@ -6,7 +6,7 @@ use std::{
 };
 
 use crate::checkin_output::{CheckinOutput, CheckinPrintable};
-use log::{debug, warn};
+use log::{debug, info, warn};
 use thiserror::Error;
 
 /// Prints a ticket with CUPS from a Typst template.
@@ -79,16 +79,6 @@ impl CheckinOutput for TypstCheckinOutput {
             .write_all(template.as_bytes())
             .map_err(|_| TypstCheckinOutputError::NoStdin)?;
 
-        // let mut output_pdf = Vec::new();
-
-        // let typst_read_length = typst_command
-        //     .stdout
-        //     .take()
-        //     .ok_or(TypstCheckinOutputError::NoStdout)?
-        //     .read_to_end(&mut output_pdf)?;
-
-        // debug!("Read {typst_read_length} bytes from Typst");
-
         let typst_output = typst_command.wait_with_output()?;
 
         debug!("Typst exited with status {}", typst_output.status);
@@ -99,7 +89,21 @@ impl CheckinOutput for TypstCheckinOutput {
             warn!("Typst stderr was non-empty:\n{typst_stderr_string}");
         }
 
-        io::stdout().write_all(&typst_output.stdout).unwrap();
+        let mut lp_command = Command::new("lp")
+            .stdin(Stdio::piped())
+            .stdout(Stdio::piped())
+            .stderr(Stdio::piped())
+            .spawn()?;
+
+        lp_command
+            .stdin
+            .as_mut()
+            .ok_or(TypstCheckinOutputError::NoStdin)?
+            .write_all(&typst_output.stdout)?;
+
+        let lp_output = lp_command.wait_with_output()?;
+
+        debug!("lp exited with status {}", lp_output.status);
 
         Ok(())
     }
