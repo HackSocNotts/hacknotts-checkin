@@ -1,4 +1,7 @@
-use std::fmt::{self, Display};
+use std::{
+    collections::HashMap,
+    fmt::{self, Display},
+};
 
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
@@ -107,8 +110,7 @@ pub struct Question {
 #[derive(Serialize, Deserialize, Debug)]
 pub struct AdminTicketResponse {
     pub ticket: WebhookCheckin,
-    pub release: Option<serde_json::Value>,
-    pub questions: Vec<Question>,
+    pub responses: HashMap<String, String>,
 }
 
 impl fmt::Display for WebhookCheckin {
