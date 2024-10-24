@@ -2,7 +2,7 @@ use std::error::Error;
 
 use log::warn;
 
-use crate::tito_types::WebhookCheckin;
+use crate::tito_types::{AdminTicket, WebhookCheckin};
 
 pub trait CheckinOutput {
     type Error: Error;
@@ -49,6 +49,40 @@ impl CheckinPrintable for WebhookCheckin {
 
         match question {
             Some(answer) => answer.response.clone(),
+            None => {
+                warn!("Failed to find pizza choice! The ticket was: {self:?}");
+                "???".to_string()
+            }
+        }
+    }
+}
+
+impl CheckinPrintable for AdminTicket {
+    fn name(&self) -> String {
+        self.name.clone()
+    }
+
+    fn reference(&self) -> String {
+        self.reference.clone()
+    }
+
+    fn discord(&self) -> String {
+        let question = self.responses.get("what-is-your-discord-username");
+
+        match question {
+            Some(answer) => answer.clone(),
+            None => {
+                warn!("Failed to find Discord username! The ticket was: {self:?}");
+                "???".to_string()
+            }
+        }
+    }
+
+    fn pizza(&self) -> String {
+        let question = self.responses.get("pizza-choice");
+
+        match question {
+            Some(answer) => answer.clone(),
             None => {
                 warn!("Failed to find pizza choice! The ticket was: {self:?}");
                 "???".to_string()

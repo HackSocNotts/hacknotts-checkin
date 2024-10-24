@@ -107,10 +107,19 @@ pub struct Question {
     pub response: String,
 }
 
+/// The admin API actually returns way more than just responses, so much so that I really don't want
+/// to type out the full definition. This definition just includes enough to implement
+/// [CheckinPrintable]
+#[derive(Serialize, Deserialize, Debug)]
+pub struct AdminTicket {
+    pub name: String,
+    pub reference: String,
+    pub responses: HashMap<String, String>,
+}
+
 #[derive(Serialize, Deserialize, Debug)]
 pub struct AdminTicketResponse {
-    pub ticket: WebhookCheckin,
-    pub responses: HashMap<String, String>,
+    pub ticket: AdminTicket,
 }
 
 impl fmt::Display for WebhookCheckin {
