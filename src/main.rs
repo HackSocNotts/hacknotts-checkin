@@ -130,7 +130,7 @@ async fn recheck(
             .send()
             .await?;
 
-        info!("Checkin successfully created! The ticket should print now.");
+        info!("Checkin successfully created! The ticket will be printed if a run loop instance is also running. If not, run the command again.");
     }
 
     Ok(())

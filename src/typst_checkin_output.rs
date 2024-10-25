@@ -105,6 +105,8 @@ impl CheckinOutput for TypstCheckinOutput {
 
         debug!("lp exited with status {}", lp_output.status);
 
+        info!("Checkin {} printed", checkin.reference());
+
         Ok(())
     }
 }
