@@ -73,7 +73,7 @@ pub struct WebhookCheckin {
     pub id: u64,
     pub slug: String,
     pub name: String,
-    pub company_name: String,
+    pub company_name: Option<String>,
     pub first_name: String,
     pub last_name: String,
     pub release_title: String,
