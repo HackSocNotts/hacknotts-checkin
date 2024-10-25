@@ -57,10 +57,13 @@ impl CheckinOutput for TypstCheckinOutput {
         let mut template = fs::read_to_string(&self.template_path)
             .map_err(|e| TypstCheckinOutputError::TemplateReadError(Box::new(e)))?;
 
-        template = template.replace("{{reference}}", &checkin.reference());
-        template = template.replace("{{name}}", &checkin.name());
-        template = template.replace("{{discord}}", &checkin.discord());
-        template = template.replace("{{pizza}}", &checkin.pizza());
+        // You could totally break through this sanitisation with a good enough input (just having
+        // \" would break it, off the top of my head). If a hacker does that, they deserve their
+        // broken ticket.
+        template = template.replace("{{reference}}", &checkin.reference().replace('"', "\\\""));
+        template = template.replace("{{name}}", &checkin.name().replace('"', "\\\""));
+        template = template.replace("{{discord}}", &checkin.discord().replace('"', "\\\""));
+        template = template.replace("{{pizza}}", &checkin.pizza().replace('"', "\\\""));
 
         let mut typst_command = Command::new("typst")
             .current_dir(template_parent)
