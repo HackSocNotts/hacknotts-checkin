@@ -128,7 +128,7 @@ impl fmt::Display for WebhookCheckin {
         write!(f, "Checkin ID: {}\n", self.id)?;
         write!(f, "Slug: {}\n", self.slug)?;
         write!(f, "Name: {} {}\n", self.first_name, self.last_name)?;
-        write!(f, "Company: {}\n", self.company_name)?;
+        write!(f, "Company: {:?}\n", self.company_name)?;
         write!(f, "Release Title: {}\n", self.release_title)?;
         write!(f, "Email: {}\n", self.email)?;
         write!(f, "Reference: {}\n", self.reference)?;
