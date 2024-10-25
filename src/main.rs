@@ -85,7 +85,16 @@ async fn recheck(
 
     debug!("Fetched {} tickets", tickets.len());
 
-    let wrapped_ticket = tickets.iter().find(|ticket| ticket.reference == reference);
+    let wrapped_ticket = tickets
+        .iter()
+        .filter(|ticket| ticket.reference.is_some())
+        .find(|ticket| {
+            ticket
+                .reference
+                .as_ref()
+                .expect("Filted for some tickets but got none?")
+                == reference
+        });
 
     if wrapped_ticket.is_none() {
         error!("Failed to find a ticket with reference {reference}. Check Tito to ensure the attendee has a ticket and retry with correct reference.");

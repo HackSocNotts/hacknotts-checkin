@@ -34,11 +34,11 @@ pub struct Checkin {
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Ticket {
     pub created_at: DateTime<Utc>,
-    pub email: String,
-    pub first_name: String,
+    pub email: Option<String>,
+    pub first_name: Option<String>,
     pub id: u64,
-    pub last_name: String,
-    pub reference: String,
+    pub last_name: Option<String>,
+    pub reference: Option<String>,
     pub registration_reference: String,
     pub release_title: String,
     pub slug: String,
