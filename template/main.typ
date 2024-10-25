@@ -23,7 +23,6 @@
 
 REFERENCE#h(1fr)#reference \
 NAME#h(1fr)#name \
-DISCORD#h(1fr)#discord \
 
 #pagebreak()
 
