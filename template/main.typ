@@ -30,6 +30,8 @@ DISCORD#h(1fr)#discord \
   #set align(center)
   = PIZZA VOUCHER
 
+  #image("folder_cat_high_contrast_gray.svg", width: 80%)
+
   #[
     #set text(size: 16.5pt)
     #pizza
