@@ -12,10 +12,11 @@
 #let name = "{{name}}"
 #let discord = "{{discord}}"
 #let pizza = "{{pizza}}"
+#let release_title = "{{release_title}}"
 
 #[
   #set align(center)
-  = HN24
+  = #release_title
 
   #image("folder_cat_high_contrast_gray.svg", width: 80%)
 ]
@@ -29,6 +30,8 @@ DISCORD#h(1fr)#discord \
 #[
   #set align(center)
   = PIZZA VOUCHER
+
+  #name
 
   #image("folder_cat_high_contrast_gray.svg", width: 80%)
 

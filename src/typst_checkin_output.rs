@@ -27,6 +27,8 @@ use thiserror::Error;
 /// [CheckinPrintable::discord]
 /// * `{{pizza}}` - The attendee's pizza choice. For example, `Pepperoni`. Represented in
 /// [CheckinPrintable::pizza]
+/// * `{{release_title}}` - The attendee's release title. For example, `Hacker`. Represented in
+/// [CheckinPrintable::release_title]
 ///
 /// These fields are filled in simply by doing a find/replace on the variables. If a variable is not
 /// found, [TypstCheckinOutputError::VariableNotFound] will be thrown with the missing variable.
@@ -64,6 +66,10 @@ impl CheckinOutput for TypstCheckinOutput {
         template = template.replace("{{name}}", &checkin.name().replace('"', "\\\""));
         template = template.replace("{{discord}}", &checkin.discord().replace('"', "\\\""));
         template = template.replace("{{pizza}}", &checkin.pizza().replace('"', "\\\""));
+        template = template.replace(
+            "{{release_title}}",
+            &checkin.release_title().replace('"', "\\\""),
+        );
 
         let mut typst_command = Command::new("typst")
             .current_dir(template_parent)

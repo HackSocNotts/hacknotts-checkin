@@ -114,6 +114,7 @@ pub struct Question {
 pub struct AdminTicket {
     pub name: String,
     pub reference: String,
+    pub release_title: String,
     pub responses: HashMap<String, String>,
 }
 

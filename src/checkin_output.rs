@@ -15,6 +15,7 @@ pub trait CheckinPrintable {
     fn reference(&self) -> String;
     fn discord(&self) -> String;
     fn pizza(&self) -> String;
+    fn release_title(&self) -> String;
 }
 
 impl CheckinPrintable for WebhookCheckin {
@@ -55,6 +56,10 @@ impl CheckinPrintable for WebhookCheckin {
             }
         }
     }
+
+    fn release_title(&self) -> String {
+        self.release_title.clone()
+    }
 }
 
 impl CheckinPrintable for AdminTicket {
@@ -88,5 +93,9 @@ impl CheckinPrintable for AdminTicket {
                 "???".to_string()
             }
         }
+    }
+
+    fn release_title(&self) -> String {
+        self.release_title.clone()
     }
 }
