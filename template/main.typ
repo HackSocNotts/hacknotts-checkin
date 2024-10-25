@@ -24,7 +24,7 @@ DISCORD#h(1fr){{discord}} \
   \-\-\-\-\-\-\-\-\-\-\- FOOD -\-\-\-\-\-\-\-\-\-\-
 ]
 
-PIZZA#h(1fr){{pizza}} \
+PIZZA#h(1fr)`{{pizza}}` \
 
 #[
   #set align(center)
