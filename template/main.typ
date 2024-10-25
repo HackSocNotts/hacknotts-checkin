@@ -24,23 +24,19 @@ REFERENCE#h(1fr)#reference \
 NAME#h(1fr)#name \
 DISCORD#h(1fr)#discord \
 
-#[
-  #set align(center)
-  \-\-\-\-\-\-\-\-\-\-\- FOOD -\-\-\-\-\-\-\-\-\-\-
-]
-
-PIZZA#h(1fr)#pizza \
+#pagebreak()
 
 #[
   #set align(center)
-  
-  #table(columns: (25%, 25%, 25%, 25%), align: center + horizon)[
-    L1
-  ][
-    D1
-  ][
-    B1
-  ][
-    L2
+  = PIZZA VOUCHER
+
+  #[
+    #set text(size: 16.5pt)
+    #pizza
   ]
+
+  This gives #reference a #pizza pizza.
+
+  Please give this over when you collect your pizza!
 ]
+
