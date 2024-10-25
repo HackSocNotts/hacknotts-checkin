@@ -38,7 +38,5 @@ NAME#h(1fr)#name \
     #set text(size: 16.5pt)
     #pizza
   ]
-
-  Please give this over when you collect your pizza!
 ]
 
