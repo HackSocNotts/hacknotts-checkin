@@ -32,7 +32,7 @@ NAME#h(1fr)#name \
 
   #name
 
-  #image("folder_cat_high_contrast_gray.svg", width: 80%)
+  #image("pizza.png", width: 80%)
 
   #[
     #set text(size: 16.5pt)
