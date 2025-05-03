@@ -28,7 +28,7 @@ For HackNotts, this is intended to run on a Raspberry Pi on the front desk, but 
 
 Somewhere in HackSoc Inventory should be a Star TSP100 thermal printer, which can work on Linux over USB. You can get the CUPS driver [here](https://starmicronics.com/support/products/tsp100iii-support-page/). In CUPS, you'll need to set it to a sensible paper size for your ticket - from what I can tell, the printer doesn't autosize/cut, at least with how this project prints tickets. The ticket template has a width of 72mm, so aim for around there.
 
-This project uses the `lpr` command to print, make sure it's installed.
+This project uses the `lp` command to print, make sure it's installed.
 
 ## Rust
 
