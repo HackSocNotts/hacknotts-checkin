@@ -1,12 +1,13 @@
 #set page(width: 72mm, height: auto, margin: 0pt)
 
 #set text(
-  font: "Departure Mono",
+  font: "PP Mondwest",
   size: 11pt,
   region: "GB"
 )
 
 #show heading: text.with(size: 2em)
+#show raw: text.with(font: "Source Code Pro")
 
 #let reference = "{{reference}}"
 #let name = "{{name}}"
@@ -18,11 +19,13 @@
   #set align(center)
   = #release_title
 
-  #image("folder_cat_high_contrast_gray.svg", width: 80%)
+  #image("castle.png", width: 80%)
 ]
 
-REFERENCE#h(1fr)#reference \
 NAME#h(1fr)#name \
+REFERENCE#h(1fr)#reference \
+LUNCH 1#h(1fr)\[ \] \
+LUNCH 2#h(1fr)\[ \]
 
 #pagebreak()
 
@@ -31,9 +34,18 @@ NAME#h(1fr)#name \
   = PIZZA VOUCHER
 
   #name
-
-  #image("pizza.png", width: 80%)
-
+  ```
+   ____                   
+  /    \			
+    u  u|      _______    
+      \ |  .-''#%&#&%#``-.   
+     = /  ((%&#&#&%&VK&%&))  
+      |    `-._#%&##&%_.-'   
+   /\/\`--.   `-."".-'
+   |  |    \   /`./          
+   |\/|  \  `-'  /
+   || |   \     /            
+  ```
   #[
     #set text(size: 16.5pt)
     #pizza
